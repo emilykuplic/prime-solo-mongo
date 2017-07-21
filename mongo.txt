@@ -1,1 +1,27 @@
+1. Create a collection named orders.
 
+//use antares
+//db.createCollection('orders')
+var orders = db.orders
+
+2. Insert at least 3 documents that represent an order. IMPORTANT: See section below for fields. Order dates should be: 2017-02-03, 2017-04-04, 2017-01-02
+> orders.insert({orderDate: new Date ('2017-01-02'), orderTotal: 579, lineItems: [{unitPrice: 289.5, quantity: 2, productName: 'crib'}]})
+> orders.insert({orderDate: new Date ('2017-04-04'), orderTotal: 789, lineItems: [{unitPrice: 1, quantity: 789, productName: 'hot wheels car'}]})
+> orders.insert({orderDate: new Date ('2017-02-03'), orderTotal: 1000, lineItems: [{unitPrice: 50, quantity: 20, productName: 'N64'}]})
+
+3. Find all orders and make them look pretty.
+orders.find().pretty()
+
+4. Find all orders with an orderDate that is after 1/31/2017.
+orders.find({orderDate: {$gt: new Date('2017-01-31')}})
+
+5. Change the orderTotal from 2/3/2017 to 63 dollars (you do NOT have to ensure the lineItems' unitPrice * quantity add up to the orderTotal)
+orders.update({ orderDate: new Date( '2017-02-03')}, {$set: {orderTotal: 63 }} )
+
+6. Add another lineItem to the order from 4/4/2017
+orders.update({orderDate: new Date ('2017-04-04')}, {$push: {lineItems: {quantity: 77, productName: 'pogosticks', unitPrice: 199.99}}})
+
+7. Change the first lineItem in the order from 1/2/2017 to be for 2 'transistor radio's
+orders.update({orderDate: new Date ('2017-01-02'), }, {$set: {'lineItems.0.quantity': 2, 'lineItems.0.productName':transistor radio}})
+
+8. Find orders with lineItems that have a quantity that is less than 10, but greater than 2. You will have to research $and
